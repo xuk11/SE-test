@@ -37,7 +37,7 @@ import net.micode.notes.R;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NoteEditText extends EditText {
+public class NoteEditText extends androidx.appcompat.widget.AppCompatEditText {
     private static final String TAG = "NoteEditText";
     private int mIndex;
     private int mSelectionStartBeforeDelete;
@@ -99,6 +99,7 @@ public class NoteEditText extends EditText {
         // TODO Auto-generated constructor stub
     }
 
+    //用户触摸屏幕时，根据触摸点的位置来调整文本视图中的光标位置。
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

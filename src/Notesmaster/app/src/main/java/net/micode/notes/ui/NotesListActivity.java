@@ -209,6 +209,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         startAsyncNotesListQuery();
     }
 
+    //初始化与笔记列表相关的资源和视图
     private void initResources() {
         mContentResolver = this.getContentResolver();
         mBackgroundQueryHandler = new BackgroundQueryHandler(this.getContentResolver());

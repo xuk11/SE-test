@@ -149,12 +149,14 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private String mUserQuery;
     private Pattern mPattern;
 
+    //当Activity被创建时调用。它用于初始化Activity的布局、设置视图元素、加载已存在的便签内容（如果有的话）等。
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.note_edit);
 
         if (savedInstanceState == null && !initActivityState(getIntent())) {
+            //savedInstanceState == null意味着Activity是首次创建而不是从之前的状态恢复
             finish();
             return;
         }
@@ -179,6 +181,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         }
     }
 
+    //函数根据传入的 Intent 对象来初始化Activity的状态，这可能意味着加载一个特定的笔记以供查看或编辑，或者创建一个新的笔记以供编辑
     private boolean initActivityState(Intent intent) {
         /**
          * If the user specified the {@link Intent#ACTION_VIEW} but not provided with id,
@@ -221,7 +224,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             int widgetType = intent.getIntExtra(Notes.INTENT_EXTRA_WIDGET_TYPE,
                     Notes.TYPE_WIDGET_INVALIDE);
-            int bgResId = intent.getIntExtra(Notes.INTENT_EXTRA_BACKGROUND_ID,
+               int bgResId = intent.getIntExtra(Notes.INTENT_EXTRA_BACKGROUND_ID,
                     ResourceParser.getDefaultBgId(this));
 
             // Parse call-record note
@@ -268,6 +271,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         initNoteScreen();
     }
 
+    //根据当前工作笔记的状态和用户的选择来初始化或更新笔记编辑屏幕的内容、外观和布局
     private void initNoteScreen() {
         mNoteEditor.setTextAppearance(this, TextAppearanceResources
                 .getTexAppearanceResource(mFontSizeId));
@@ -430,7 +434,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (id == R.id.btn_set_bg_color) {
             mNoteBgColorSelector.setVisibility(View.VISIBLE);
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
-                    -                    View.VISIBLE);
+                    View.VISIBLE);
         } else if (sBgSelectorBtnsMap.containsKey(id)) {
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
                     View.GONE);
@@ -452,6 +456,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         }
     }
 
+    //这个函数的功能是在用户按下返回键时首先尝试清除某些设置状态，如果清除成功则不执行其他操作；
+    // 如果清除失败或不需要清除，则保存当前笔记内容，并继续执行默认的返回键行为（即结束当前Activity）。
+    // 这样的实现可以用于确保在用户离开编辑笔记的界面时不会丢失未保存的更改
     @Override
     public void onBackPressed() {
         if(clearSettingState()) {
@@ -480,6 +487,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         mHeadViewPanel.setBackgroundResource(mWorkingNote.getTitleBgResId());
     }
 
+    //函数用于根据当前工作笔记的状态（如所在文件夹、模式、是否有提醒）来动态准备或修改Activity的菜单项
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (isFinishing()) {
@@ -623,7 +631,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (mWorkingNote.getNoteId() > 0) {
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.setData(ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, mWorkingNote.getNoteId()));
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE);
             AlarmManager alarmManager = ((AlarmManager) getSystemService(ALARM_SERVICE));
             showAlertHeader();
             if(!set) {

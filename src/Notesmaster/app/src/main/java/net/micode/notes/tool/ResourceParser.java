@@ -65,6 +65,7 @@ public class ResourceParser {
         }
     }
 
+    //根据用户是否设置了背景颜色偏好，来决定是返回一个随机背景ID还是默认的背景ID。
     public static int getDefaultBgId(Context context) {
         if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
                 NotesPreferenceActivity.PREFERENCE_SET_BG_COLOR_KEY, false)) {

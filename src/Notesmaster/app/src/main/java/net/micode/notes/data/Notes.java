@@ -165,6 +165,9 @@ public class Notes {
          * <P> Type : INTEGER (long) </P>
          */
         public static final String VERSION = "version";
+
+        public static final String PASSWORD = "";
+        public static final boolean FLAG =false;
     }
 
     public interface DataColumns {
@@ -239,6 +242,8 @@ public class Notes {
          * <P> Type: TEXT </P>
          */
         public static final String DATA5 = "data5";
+        public static final String PASSWORD = "";
+        public static final boolean FLAG =false;
     }
 
     public static final class TextNote implements DataColumns {
